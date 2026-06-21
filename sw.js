@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kids-fun-planet-memory-v1';
+const CACHE_NAME = 'kids-fun-planet-memory-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -17,6 +17,8 @@ const ASSETS = [
   './assets/icons/apple-touch-icon.png',
 ];
 
+const APP_SHELL = ['./', './index.html', './style.css', './script.js', './manifest.json'];
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
@@ -33,14 +35,37 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+function isAppShell(url) {
+  return APP_SHELL.some((path) => url.endsWith(path.replace('./', '/')) || url.endsWith(path));
+}
+
 self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const isNavigation = request.mode === 'navigate';
+  const url = new URL(request.url);
+
+  if (isNavigation || isAppShell(url.pathname)) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
+    caches.match(request).then((cached) => {
       if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok && event.request.method === 'GET') {
+      return fetch(request).then((response) => {
+        if (response.ok && request.method === 'GET') {
           const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
         }
         return response;
       });
