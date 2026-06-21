@@ -3,32 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Game</title>
+<title>Kids Fun Planet - Memory Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="sky">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="star-twinkle s1">⭐</div>
+    <div class="star-twinkle s2">✨</div>
+    <div class="star-twinkle s3">🌟</div>
+    <div class="star-twinkle s4">✨</div>
+  </div>
+
   <div class="game-container">
     <header>
-      <h1>🧠 Memory Game</h1>
+      <div class="logo-wrap">
+        <img src="assets/mascots/banner.jpg" alt="Kids Fun Planet" class="banner-img">
+        <h1>🎉 Memory Game 🎉</h1>
+      </div>
+
       <div class="stats">
         <div class="stat">
+          <span class="stat-icon">🕹️</span>
           <span class="stat-label">Mosse</span>
           <span id="moves" class="stat-value">0</span>
         </div>
         <div class="stat">
+          <span class="stat-icon">⏱️</span>
           <span class="stat-label">Tempo</span>
           <span id="timer" class="stat-value">00:00</span>
         </div>
         <div class="stat">
+          <span class="stat-icon">💎</span>
           <span class="stat-label">Coppie</span>
           <span id="pairs" class="stat-value">0/8</span>
         </div>
       </div>
+
       <div class="controls">
         <button id="restart-btn">🔄 Nuova partita</button>
         <select id="difficulty">
-          <option value="8">Facile (4x4)</option>
-          <option value="18">Difficile (6x6)</option>
+          <option value="8">🌈 Facile (4x4)</option>
+          <option value="18">🚀 Difficile (6x6)</option>
         </select>
       </div>
     </header>
@@ -36,11 +57,13 @@
     <main id="board" class="board"></main>
 
     <div id="win-overlay" class="overlay hidden">
+      <div class="confetti-layer" id="confetti-layer"></div>
       <div class="win-card">
-        <h2>🎉 Hai vinto!</h2>
+        <img src="assets/mascots/cards/stella.jpg" alt="Stella" class="win-mascot">
+        <h2>🎉 Hai vinto! 🎉</h2>
         <p>Mosse: <span id="final-moves"></span></p>
         <p>Tempo: <span id="final-time"></span></p>
-        <button id="play-again-btn">Gioca ancora</button>
+        <button id="play-again-btn">✨ Gioca ancora ✨</button>
       </div>
     </div>
   </div>
